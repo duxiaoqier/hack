@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Send</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="https://static.bimface.com/api/BimfaceSDKLoader/BimfaceSDKLoader@latest-release.js"
+            charset="utf-8"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="name">What is your name?</label>
+                    <input type="text" id="name" class="form-control" placeholder="Your name here...">
+                </div>
+                <button id="send" class="btn btn-default" type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="conversation" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>模型</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div id="view3d" class="col-md-12" style="height:800px"></div>
+</div>
+
+<script>
+    $(function () {
+        sendConnect();
+        $.get("token", function (response) {
+            var viewToken = response
+            var options = new BimfaceSDKLoaderConfig();
+            options.viewToken = viewToken;
+            BimfaceSDKLoader.load(options, successCallback, failureCallback);
+
+            function successCallback() {
+                // 获取DOM元素
+                var dom4Show = document.getElementById('view3d');
+                var webAppConfig = new Glodon.Bimface.Application.WebApplication3DConfig();
+                webAppConfig.domElement = dom4Show;
+
+                // 创建WebApplication
+                window.app = new Glodon.Bimface.Application.WebApplication3D(webAppConfig);
+
+                // 添加待显示的模型
+                app.addView(viewToken);
+
+                // 监听添加view完成的事件
+                app.addEventListener(Glodon.Bimface.Application.WebApplication3DEvent.ViewAdded, function () {
+
+                    // 渲染3D模型
+                    app.render();
+
+                    // 从WebApplication获取viewer3D对象
+                    window.viewer3D = app.getViewer();
+
+                    setInterval(sendCameraStatus, 10)
+                });
+            }
+            function failureCallback(error) {
+                console.log(error);
+            }
+        })
+
+
+    });
+
+    function sendConnect() {
+        var socket = new SockJS('/gs-guide-websocket');
+        stompClient = Stomp.over(socket);
+    }
+
+    function sendCameraStatus() {
+        stompClient.send("/app/cameraStatus", {}, JSON.stringify(window.viewer3D.getCameraStatus()));
+    }
+</script>
+</body>
+</html>
