@@ -1,6 +1,8 @@
 package com.bimface.hack.controller;
 
+import com.bimface.hack.bean.User;
 import com.bimface.hack.bean.camera.CameraStatus;
+import com.bimface.hack.holder.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -16,7 +18,9 @@ public class WebSocketController {
     @MessageMapping("/cameraStatus")
     public void cameraStatus(CameraStatus cameraStatus, SimpMessageHeaderAccessor headerAccessor) throws Exception {
         String sessionId = headerAccessor.getSessionAttributes().get("sessionId").toString();
-        System.out.println("web socket:" + sessionId);
-        messagingTemplate.convertAndSend("/topic/cameraStatus", cameraStatus);
+        User user = UserHolder.userMap.get(sessionId);
+        if (user != null && user.getRole() != null && user.getRoomId() !=null && user.getRole().equals(1)){
+            messagingTemplate.convertAndSend("/topic/cameraStatus/" + user.getRoomId(), cameraStatus);
+        }
     }
 }

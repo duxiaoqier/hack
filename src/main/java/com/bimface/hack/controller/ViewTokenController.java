@@ -1,14 +1,14 @@
 package com.bimface.hack.controller;
 
+import com.bimface.hack.bean.File;
 import com.bimface.sdk.BimfaceClient;
 import com.bimface.sdk.exception.BimfaceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -16,18 +16,19 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class ViewTokenController {
-
-    private final BimfaceClient bimfaceClient;
+    private BimfaceClient bimfaceClient;
 
     @Autowired
     public ViewTokenController(BimfaceClient bimfaceClient) {
         this.bimfaceClient = bimfaceClient;
     }
 
-    @GetMapping("token")
+    @GetMapping("file/detail")
     @ResponseBody
-    public String token(HttpServletRequest request) throws BimfaceException {
-        System.out.println("get Token:"+request.getSession().getId());
-        return bimfaceClient.getViewTokenByFileId(1225353415909568L);
+    public File fileDetail(@RequestParam(value = "fileId") Long fileId) throws BimfaceException {
+        File file = new File();
+        file.setFileName(bimfaceClient.translate(fileId).getName());
+        file.setViewToken(bimfaceClient.getViewTokenByFileId(fileId));
+        return file;
     }
 }

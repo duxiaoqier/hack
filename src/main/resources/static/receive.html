@@ -84,7 +84,7 @@
         stompClient.connect({}, function (frame) {
             setConnected(true);
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/cameraStatus', function (cameraStatus) {
+            stompClient.subscribe('/topic/cameraStatus/1', function (cameraStatus) {
                 window.viewer3D.setCameraStatus(JSON.parse(cameraStatus.body))
                 window.app.render();
             });
