@@ -27,7 +27,7 @@ public class ViewTokenController {
     @GetMapping("token")
     @ResponseBody
     public String token(HttpServletRequest request) throws BimfaceException {
-        System.out.println(request.getSession().getId());
+        System.out.println("get Token:"+request.getSession().getId());
         return bimfaceClient.getViewTokenByFileId(1225353415909568L);
     }
 }

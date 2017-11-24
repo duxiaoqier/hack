@@ -52,7 +52,6 @@
 
 <script>
     $(function () {
-        sendConnect();
         $.get("token", function (response) {
             var viewToken = response
             var options = new BimfaceSDKLoaderConfig();
@@ -80,6 +79,7 @@
                     // 从WebApplication获取viewer3D对象
                     window.viewer3D = app.getViewer();
 
+                    sendConnect();
                     setInterval(sendCameraStatus, 10000)
                 });
             }

@@ -16,7 +16,7 @@ public class WebSocketController {
     @MessageMapping("/cameraStatus")
     public void cameraStatus(CameraStatus cameraStatus, SimpMessageHeaderAccessor headerAccessor) throws Exception {
         String sessionId = headerAccessor.getSessionAttributes().get("sessionId").toString();
-        System.out.println(sessionId);
+        System.out.println("web socket:" + sessionId);
         messagingTemplate.convertAndSend("/topic/cameraStatus", cameraStatus);
     }
 }
