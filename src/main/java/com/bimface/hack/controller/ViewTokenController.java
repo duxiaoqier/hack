@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author dup, 2017-11-22
@@ -25,7 +26,8 @@ public class ViewTokenController {
 
     @GetMapping("token")
     @ResponseBody
-    public String token() throws BimfaceException {
+    public String token(HttpServletRequest request) throws BimfaceException {
+        System.out.println(request.getSession().getId());
         return bimfaceClient.getViewTokenByFileId(1225353415909568L);
     }
 }

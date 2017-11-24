@@ -1,4 +1,4 @@
-package com.bimface.hack.bean;
+package com.bimface.hack.bean.camera;
 
 /**
  * @author dup, 2017-11-23

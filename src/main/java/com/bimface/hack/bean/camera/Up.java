@@ -1,40 +1,40 @@
-package com.bimface.hack.bean;
+package com.bimface.hack.bean.camera;
 
 /**
  * @author dup, 2017-11-23
  */
-public class Position {
-    private Double x;
-    private Double y;
-    private Double z;
+public class Up {
+    private Integer x;
+    private Integer y;
+    private Integer z;
 
-    public Double getX() {
+    public Integer getX() {
         return x;
     }
 
-    public void setX(Double x) {
+    public void setX(Integer x) {
         this.x = x;
     }
 
-    public Double getY() {
+    public Integer getY() {
         return y;
     }
 
-    public void setY(Double y) {
+    public void setY(Integer y) {
         this.y = y;
     }
 
-    public Double getZ() {
+    public Integer getZ() {
         return z;
     }
 
-    public void setZ(Double z) {
+    public void setZ(Integer z) {
         this.z = z;
     }
 
     @Override
     public String toString() {
-        return "Position{" +
+        return "Up{" +
                 "x=" + x +
                 ", y=" + y +
                 ", z=" + z +
