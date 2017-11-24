@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletRequest;
  * @author dup, 2017-11-22
  */
 @Controller
-public class ViewTokenController {
+public class FileController {
     private BimfaceClient bimfaceClient;
 
     @Autowired
-    public ViewTokenController(BimfaceClient bimfaceClient) {
+    public FileController(BimfaceClient bimfaceClient) {
         this.bimfaceClient = bimfaceClient;
     }
 

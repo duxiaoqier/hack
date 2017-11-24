@@ -44,8 +44,8 @@
 </div>
 <script>
     $(function () {
-        $.get("token", function (response) {
-            var viewToken = response
+        $.get("file/detail?fileId=1225353415909568", function (response) {
+            var viewToken = response.viewToken
             var options = new BimfaceSDKLoaderConfig();
             options.viewToken = viewToken;
             BimfaceSDKLoader.load(options, successCallback, failureCallback);
